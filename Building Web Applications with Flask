@@ -1,0 +1,75 @@
+FLASK: GETTING STARTED
+	Microframework
+	Minimal Features
+	Minimal Code
+	Why Flask?
+		Clean and Simple
+		Small app in a single file
+	Un-opinionated
+		Flexible
+		Choose the components you need
+		Well-documented
+		Popular
+	Included with Flask
+		Jinja 2
+		Templates
+		Werkzeug
+		HTTP and routing
+		Development server ans debugger
+		Unit testing support
+	Development run
+		$ export FLASK_APP=flashcards.py   
+		$ export FLASK_ENV=development
+		$ flask run
+	URL Map
+		>>> import flashcards
+		>>> flashcards.app.url_map
+	Model-Template-View = Model-View-Controller
+		Model
+			Data
+			Usually from DB
+			Flask: leaves it to us
+		Template
+			Presentation
+			Generates HTML
+			In Flask: Jinja2
+		View
+			Behaviour
+				Python function
+				Mapped to URL
+	Cross Site Scripting (XSS)
+		Try to insert malicious code in database
+	Flask WTF
+		https://flask-wtf.readthedocs.io/en/stable/
+		Simple integration of Flask and WTForms, including CSRF, file upload, and reCAPTCHA
+	Request
+		Needs to be imported
+		Contains request info: headers, cookies, form data, etc.
+		Is a global object, but bound to the current request
+	Deploy application
+		Server: gunicorn
+			Do not use Flask server
+			Use a reverse proxy (nginx)
+			Commands:
+				$ pip install -r requirements.txt
+				$ sudo apt install gunicorn
+				$ gunicorn3 flashcards:app
+					To run in background, use -D parameter
+				$ cd /etc/nginx/sites-available
+				$ rm default
+				$ sudo vim default
+					  server {
+						listen 80;
+						server_name example.org;
+						access_log  /var/log/nginx/example.log;
+
+						location / {
+							proxy_pass http://127.0.0.1:8000;
+							proxy_set_header Host $host;
+							proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+						}
+					  }
+			  	$ sudo service nginx restart
+		https://flask.palletsprojects.com/en/1.1.x/deploying/
+
+			
